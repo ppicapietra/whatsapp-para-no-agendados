@@ -1,0 +1,31 @@
+{
+    "name": "Abrir char Whatsapp con no agendados",
+    "short_name": "Wna",
+    "lang": "es-AR",
+    "start_url": "https://grupopietra.com/tools/wsp-ncs/whatsapp-msg.html",
+    "display": "standalone",
+    "background_color": "white",
+    "theme_color": "#25D366",
+    "icons": [
+        {
+            "src": "images/whatsapp-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "images/whatsapp-256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "images/whatsapp-128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "images/whatsapp-16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        }
+    ]
+}
