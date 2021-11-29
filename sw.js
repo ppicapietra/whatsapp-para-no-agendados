@@ -1,6 +1,6 @@
 var cacheName = 'wncs-pwa';
 var filesToCache = [
-  '/whatsapp-msg.html'
+  './whatsapp-msg.html'
 ];
 
 /* Start the service worker and cache all of the app's content */
