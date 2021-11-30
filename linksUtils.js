@@ -1,6 +1,6 @@
 function getLink(cellphoneNumber, message = null) {
     try {
-        return encodeURI(`https://wa.me/+549${cellphoneNumber}${((message !== '') ? (`?text=${message}`) : '')}`);
+        return encodeURI(`https://wa.me/+549${cellphoneNumber}${((message) ? (`?text=${message}`) : '')}`);
     }
     catch (e) { }
 }
