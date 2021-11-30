@@ -18,6 +18,7 @@
   <meta name="apple-mobile-web-app-title" content="Abrir char Whatsapp con no agendados">
   <meta name="msapplication-TileImage" content="./images/whatsapp-128.png">
   <meta name="msapplication-TileColor" content="#25D366">
+  <script src="linksUtils.js"></script>
   <style>
     * {
       font-family: Roboto, arial, 'Courier New', Courier;
@@ -111,33 +112,45 @@
     Creado por&nbsp;<a href="https://github.com/thenablyn">@thenablyn</a>
   </footer>
 
-
   <script>
 
-    function getLink( cellphoneNumber, message = null ) {
-
-      return encodeURI( `https://wa.me/+549${cellphoneNumber}${(( message !== '' ) ? ( `?text=${message}` ) : '' )}` );
-    }
-    function validate() {
+    window.validate = () => {
       event.preventDefault();
-      const cf = document.getElementById( "cellphone" );
-      const cellphoneNumber = cf.value.replace( /[^0-9]/g, "" ).replace( /^(54)?9?/g, "" );
+      const cf = document.getElementById("cellphone");
+      const cellphoneNumber = formatCellphoneNumber(cf.value);
 
-      if ( ( cellphoneNumber == "" ) || ( cellphoneNumber.length < 9 ) ) {
+      if (!validateCellphoneNumber(cellphoneNumber)) {
         alert("El número de celular tiene un formato incorrecto");
         return false;
       }
       else {
-        const message = document.getElementById( "message" ).value;
-        const url = getLink( cellphoneNumber, message );
-        window.location = url;
+        const message = document.getElementById("message").value;
+        const url = getLink(cellphoneNumber);
+        openChat(url);
       }
     }
     /** Set focus on cellphone input at beggining*/
-    window.onload = function () {
-      const cf = document.getElementById( "cellphone" );
+    document.addEventListener("DOMContentLoaded", () => {
+
+      try {
+        const params = (new URL(document.location)).searchParams;
+        const nParam = params.get('n');
+        if (nParam) {
+          const cellphoneNumber = formatCellphoneNumber(nParam);
+
+          if (validateCellphoneNumber(cellphoneNumber)) {
+            const url = getLink(cellphoneNumber);
+            openChat(url);
+          }
+          else { //wrong format number
+            alert("El número de celular tiene un formato incorrecto");
+          }
+        }
+      } catch (e) { /** Error handler */ }
+
+      const cf = document.getElementById("cellphone");
       cf.focus();
-    }
+    });
   </script>
   <script src="./main.js"></script>
 </body>
