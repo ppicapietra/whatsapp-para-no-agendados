@@ -1,0 +1,12 @@
+{
+    "web_apps": [
+      {
+        "manifest": "https://grupopietra.com/tools/wsp-ncs/manifest.json",
+        "details": {
+          "paths": ["/*"],
+          "exclude_paths": []
+        }
+      }
+    ]
+  }
+  
