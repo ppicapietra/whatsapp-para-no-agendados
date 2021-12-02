@@ -1,21 +1,27 @@
-var cacheName = 'wncs-pwa';
-var filesToCache = [
-  './whatsapp-msg.html'
+const versionNumber = "1.0";
+let cacheName = 'wncs-pwa';
+let filesToCache = [
+  './images/whatsapp-16.png',
+  './images/whatsapp-128.png',
+  './images/whatsapp-256.png',
+  './images/whatsapp-512.png',
+  './whatsapp-msg.html',
+  './linksUtils.js'  
 ];
 
 /* Start the service worker and cache all of the app's content */
-self.addEventListener( 'install', function ( e ) {
+self.addEventListener( 'install', ( e ) => {
   e.waitUntil(
-    caches.open( cacheName ).then( function ( cache ) {
+    caches.open( cacheName ).then( ( cache ) => {
       return cache.addAll( filesToCache );
     })
   );
 });
 
 /* Serve cached content when offline */
-self.addEventListener( 'fetch', function ( e ) {
+self.addEventListener( 'fetch', ( e ) => {
   e.respondWith(
-    caches.match( e.request, { ignoreSearch: true }).then( function ( response ) {
+    caches.match( e.request, { ignoreSearch: true }).then( ( response ) => {
       return response || fetch( e.request );
     })
   );
