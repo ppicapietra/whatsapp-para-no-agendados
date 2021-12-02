@@ -1,4 +1,4 @@
-const versionNumber = "1.1";
+const versionNumber = "1.2.1";
 let cacheName = 'wncs-pwa';
 let filesToCache = [
   './images/whatsapp-16.png',
