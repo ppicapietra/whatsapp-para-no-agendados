@@ -103,8 +103,8 @@
   <h2>Abrir chat de Whatsapp con n&uacute;mero no agendado</h2>
   <form role="main" onsubmit="return validate()">
     <input type="tel" placeholder="n&uacute;mero de tel&eacute;fono" name="cellphone" id="cellphone" />
-    <textarea placeholder="Mensaje (opcional)" name="message" id="message" maxlength="500"
-      style="display:none"></textarea>
+    <!--<textarea placeholder="Mensaje (opcional)" name="message" id="message" maxlength="500"
+      style="display:none"></textarea>-->
     <a class="buttonLink" role="button" href="javascript:void(0)" id="send" onclick="return validate()">ABRIR CHAT</a>
   </form>
 
@@ -117,16 +117,16 @@
     window.validate = () => {
       event.preventDefault();
       const cf = document.getElementById("cellphone");
-      const cellphoneNumber = formatCellphoneNumber(cf.value);
+      const cellphoneNumber = Utils.formatCellphoneNumber(cf.value);
 
-      if (!validateCellphoneNumber(cellphoneNumber)) {
+      if (!Utils.validateCellphoneNumber(cellphoneNumber)) {
         alert("El número de celular tiene un formato incorrecto");
         return false;
       }
       else {
-        const message = document.getElementById("message").value;
-        const url = getLink(cellphoneNumber);
-        openChat(url);
+        //const message = document.getElementById("message").value;
+        const url = Utils.getLink(cellphoneNumber);
+        Utils.openChat(url);
       }
     }
     /** Set focus on cellphone input at beggining*/
@@ -136,11 +136,11 @@
         const params = (new URL(document.location)).searchParams;
         const nParam = params.get('n');
         if (nParam) {
-          const cellphoneNumber = formatCellphoneNumber(nParam);
+          const cellphoneNumber = Utils.formatCellphoneNumber(nParam);
 
-          if (validateCellphoneNumber(cellphoneNumber)) {
-            const url = getLink(cellphoneNumber);
-            openChat(url);
+          if (Utils.validateCellphoneNumber(cellphoneNumber)) {
+            const url = Utils.getLink(cellphoneNumber);
+            Utils.openChat(url);
           }
           else { //wrong format number
             alert("El número de celular tiene un formato incorrecto");
