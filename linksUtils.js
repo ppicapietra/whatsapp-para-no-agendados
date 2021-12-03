@@ -8,7 +8,7 @@ const Utils = {
     },
  validateCellphoneNumber: (cellphoneNumber) => {
         try {
-            return !((cellphoneNumber == "") || (cellphoneNumber.length < 9));
+            return !((cellphoneNumber == "") || (cellphoneNumber.length < 8));
         }
         catch (e) { }
     },

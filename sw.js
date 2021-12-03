@@ -12,6 +12,7 @@ let filesToCache = [
 /* Start the service worker and cache all of the app's content */
 self.addEventListener( 'install', ( e ) => {
   e.waitUntil(
+    navigator.registerProtocolHandler('web+wanoa', 'https://grupopietra.com/tools/wsp-ncs/whatsapp-msg.html?n=%s');
     caches.open( cacheName ).then( ( cache ) => {
       return cache.addAll( filesToCache );
     })

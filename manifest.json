@@ -22,8 +22,8 @@
     "url_handlers": [
         {
             "origin": "https://grupopietra.com/tools/wsp-ncs/",
-            "scheme": "web+wspopenchat",
-            "protocol": "web+wspopenchat",
+            "scheme": "web+wanoa",
+            "protocol": "web+wanoa",
             "url": "https://grupopietra.com/tools/wsp-ncs/whatsapp-msg.html?n=%s",
             "title": "Abrir chat en Whatsapp",
             "icon": {
@@ -35,7 +35,7 @@
     ],
     "protocol_handlers": [
         {
-            "protocol": "web+wspopenchat",
+            "protocol": "web+wanoa",
             "url": "https://grupopietra.com/tools/wsp-ncs/whatsapp-msg.html?n=%s"
         }
     ],
