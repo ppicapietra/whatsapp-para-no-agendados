@@ -146,6 +146,15 @@
             alert("El número de celular tiene un formato incorrecto");
           }
         }
+        qParam = params.get('q');
+        if (qParam) {
+          const cellphone = Utils.formatCellphoneNumber(qParam.split(':')[1]);
+          if (Utils.validateCellphoneNumber(cellphone)) {
+            const url = Utils.getLink(cellphone);
+            Utils.openChat(url);
+          }
+
+        }
       } catch (e) { /** Error handler */ }
 
       const cf = document.getElementById("cellphone");
