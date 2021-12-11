@@ -1,5 +1,5 @@
-const versionNumber = "1.3.0";
-let cacheName = 'wanoa-cache-v1';
+const versionNumber = "1.4.0";
+let cacheName = 'wanoa-cache-v2';
 let filesToCache = [
   './images/whatsapp-16.png',
   './images/whatsapp-128.png',
@@ -10,26 +10,17 @@ let filesToCache = [
 ];
 
 /* Start the service worker and cache all of the app's content */
-self.addEventListener('install', (e) => {
+self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(cacheName).then((cache) => {
+    caches.open(cacheName).then( cache => {
       return cache.addAll(filesToCache);
-    }).then(() => navigator.registerProtocolHandler('web+wanoa', 'https://grupopietra.com/tools/wsp-ncs/whatsapp-msg.html?q=%s',"WaNoA"))
-  );
-});
-
-/* Serve cached content when offline */
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request, { ignoreSearch: true }).then((response) => {
-      return response || fetch(e.request);
-    })
+    }).then(() => navigator.registerProtocolHandler('web+wanoa', 'whatsapp-msg.html?q=%s',"WaNoA"))
   );
 });
 
 /* Delete old caché when this one start working after an app update */
-self.addEventListener('activate', (e) => {
-  event.waitUntil(
+self.addEventListener('activate', e => {
+  e.waitUntil(
     caches.keys().then(function (cacheNames) {
       return Promise.all(
         cacheNames.map(function (cacheName) {
@@ -40,7 +31,29 @@ self.addEventListener('activate', (e) => {
   );
 
 });
-/* App launched */
-self.addEventListener('launch', async (e) => {
 
+/* Serve cached content when offline */
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request, { ignoreSearch: true }).then((response) => {
+      if ( response !== undefined ) {
+        return response;
+      }
+      else {
+        return fetch( e.request )
+        .then( response => {
+          let responseClone = response.clone();
+          caches.open(cacheName)
+          .then( cache => cache.put( e.request, responseClone ));
+          return response;
+        })
+        .catch( () => caches.match('./images/whatsapp-128.png'));
+      }
+    })
+  );
+});
+
+/* App launched */
+self.addEventListener('launch', async e => {
+document.getElementById('appVerison').textContent = `v${versionNumber}`;
 });
