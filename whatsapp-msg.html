@@ -129,7 +129,7 @@
   </footer>
 
   <script>
-    const versionNumber = "1.5.3";
+    const versionNumber = "1.5.3c";
     window.validate = () => {
       event.preventDefault();
 
@@ -151,6 +151,8 @@
 
       try {
         const params = (new URL(document.location)).searchParams;
+        console.log(params);
+
         const nParam = params.get('n');
         if (nParam) {
           const cellphoneNumber = Utils.formatCellphoneNumber(nParam);
@@ -165,7 +167,7 @@
         }
         qParam = params.get('q');
         if (qParam) {
-          const cellphone = Utils.formatCellphoneNumber(qParam.split('%3A')[1]);
+          const cellphone = Utils.formatCellphoneNumber(qParam.split(':')[1]);
           if (Utils.validateCellphoneNumber(cellphone)) {
             const url = Utils.getLink(cellphone);
             Utils.openChat(url);

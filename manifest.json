@@ -1,6 +1,7 @@
 {
     "id": "/tools/wsp-ncs/whatsapp-msg.html",
     "dir": "ltr",
+    "version": "1.5.3",
     "name": "Abrir chat Whatsapp",
     "short_name": "WaNoA",
     "lang": "es-AR",
