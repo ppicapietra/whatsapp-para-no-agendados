@@ -1,4 +1,4 @@
-const versionNumber = "1.4.0";
+const versionNumber = "1.5.3";
 let cacheName = 'wanoa-cache-v2';
 let filesToCache = [
   './images/whatsapp-16.png',
@@ -12,9 +12,9 @@ let filesToCache = [
 /* Start the service worker and cache all of the app's content */
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(cacheName).then( cache => {
+    caches.open(cacheName).then(cache => {
       return cache.addAll(filesToCache);
-    }).then(() => navigator.registerProtocolHandler('web+wanoa', 'whatsapp-msg.html?q=%s',"WaNoA"))
+    })
   );
 });
 
@@ -36,24 +36,19 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then((response) => {
-      if ( response !== undefined ) {
+      if (response !== undefined) {
         return response;
       }
       else {
-        return fetch( e.request )
-        .then( response => {
-          let responseClone = response.clone();
-          caches.open(cacheName)
-          .then( cache => cache.put( e.request, responseClone ));
-          return response;
-        })
-        .catch( () => caches.match('./images/whatsapp-128.png'));
+        return fetch(e.request)
+          .then(response => {
+            let responseClone = response.clone();
+            caches.open(cacheName)
+              .then(cache => cache.put(e.request, responseClone));
+            return response;
+          })
+          .catch(() => caches.match('./images/whatsapp-128.png'));
       }
     })
   );
-});
-
-/* App launched */
-self.addEventListener('launch', async e => {
-document.getElementById('appVerison').textContent = `v${versionNumber}`;
 });

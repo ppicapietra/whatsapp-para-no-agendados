@@ -85,17 +85,25 @@
     footer {
       display: flex;
       width: 100%;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
-      align-items: flex-end;
+      align-items: center;
       margin: 16vh auto auto;
       font-size: 5vmin;
     }
+
     footer p {
-      margin: auto;
       margin-top: 20px;
       font-size: small;
       color: #8e8e8e;
+    }
+
+    #addHandlerLink {
+      margin-bottom: 15px;
+    }
+
+    .link {
+      cursor: pointer;
     }
   </style>
 
@@ -115,14 +123,16 @@
   </form>
 
   <footer>
-    Creado por&nbsp;<a href="https://github.com/thenablyn">@thenablyn</a>
-    <p id="appPersion"></p>
+    <p id="addHandlerLink"><a class="link" onclick="registerHandler()">Registrar enlace personalizado</a></p>
+    <p>Creado por&nbsp;<a class="link" href="https://github.com/thenablyn">@thenablyn</a></p>
+    <p id="appVersion"></p>
   </footer>
 
   <script>
-
+    const versionNumber = "1.5.3";
     window.validate = () => {
       event.preventDefault();
+
       const cf = document.getElementById("cellphone");
       const cellphoneNumber = Utils.formatCellphoneNumber(cf.value);
 
@@ -155,7 +165,7 @@
         }
         qParam = params.get('q');
         if (qParam) {
-          const cellphone = Utils.formatCellphoneNumber(qParam.split(':')[1]);
+          const cellphone = Utils.formatCellphoneNumber(qParam.split('%3A')[1]);
           if (Utils.validateCellphoneNumber(cellphone)) {
             const url = Utils.getLink(cellphone);
             Utils.openChat(url);
@@ -164,9 +174,21 @@
         }
       } catch (e) { /** Error handler */ }
 
+      try {
+
+            document.getElementById('appVersion').textContent = `v${versionNumber}`;
+      }
+      catch (err) { }
+
       const cf = document.getElementById("cellphone");
       cf.focus();
     });
+    function registerHandler() {
+      try {
+        navigator.registerProtocolHandler('web+wanoa', 'whatsapp-msg.html?q=%s', "WaNoA")
+      }
+      catch (err) { }
+    }
   </script>
   <script src="./main.js"></script>
 </body>
