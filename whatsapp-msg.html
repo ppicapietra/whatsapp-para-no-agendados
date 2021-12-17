@@ -19,6 +19,7 @@
   <meta name="msapplication-TileImage" content="./images/whatsapp-128.png">
   <meta name="msapplication-TileColor" content="#25D366">
   <script src="linksUtils.js"></script>
+  <script src="https://kit.fontawesome.com/61adbc6fba.js" crossorigin="anonymous"></script>
   <style>
     * {
       font-family: Roboto, arial, 'Courier New', Courier;
@@ -57,7 +58,7 @@
 
     a.buttonLink {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
     }
@@ -80,6 +81,10 @@
       background-color: #33ff33;
       border-color: #33ff33;
       color: white;
+    }
+
+    a.buttonLink .btn-icon {
+      margin-left: 15px
     }
 
     footer {
@@ -119,7 +124,7 @@
     <input type="tel" placeholder="n&uacute;mero de tel&eacute;fono" name="cellphone" id="cellphone" />
     <!--<textarea placeholder="Mensaje (opcional)" name="message" id="message" maxlength="500"
       style="display:none"></textarea>-->
-    <a class="buttonLink" role="button" href="javascript:void(0)" id="send" onclick="return validate()">ABRIR CHAT</a>
+    <a class="buttonLink" role="button" href="javascript:void(0)" id="send" onclick="return validate()">ABRIR CHAT<i class="fab fa-whatsapp btn-icon"></i></a>
   </form>
 
   <footer>
@@ -129,7 +134,7 @@
   </footer>
 
   <script>
-    const versionNumber = "1.5.3d";
+    const versionNumber = "1.5.4";
     window.validate = () => {
       event.preventDefault();
 
