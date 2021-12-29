@@ -2,7 +2,7 @@ const Utils = {
 
     getLink: (cellphoneNumber, message = null) => {
         try {
-            return encodeURI(`https://wa.me/+549${cellphoneNumber}${((message) ? (`&text=${message}`) : '')}`);
+            return encodeURI(`https://web.whatsapp.com/send?phone=+549${cellphoneNumber}${((message) ? (`&text=${message}`) : '')}&app_absent=0`);
         }
         catch (e) { }
     },
@@ -14,13 +14,13 @@ const Utils = {
     },
 formatCellphoneNumber: (cellphoneNumber) => {
         try {
-            return cellphoneNumber.replace(/[^0-9]/g, "").replace(/^(54)?9?/g, "");
+            return cellphoneNumber.replace(/[^0-9]/g, "").replace(/^(54)9?/g, "");
         }
         catch (e) { }
     },
 openChat: (url) => {
         try {
-            window.location = url;
+            window.open(url,'_blank');
         }
         catch (e) { }
     }
