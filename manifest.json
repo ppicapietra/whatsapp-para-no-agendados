@@ -1,11 +1,11 @@
 {
-    "id": "/tools/wsp-ncs/whatsapp-msg.html",
+    "id": "/tools/wsp-ncs/index.html",
     "dir": "ltr",
     "version": "1.5.3",
     "name": "Abrir chat Whatsapp",
     "short_name": "WaNoA",
     "lang": "es-AR",
-    "start_url": "https://grupopietra.com/tools/wsp-ncs/whatsapp-msg.html",
+    "start_url": "https://grupopietra.com/tools/wsp-ncs/index.html",
     "scope": "/tools/wsp-ncs/",
     "display": "standalone",
     "background_color": "white",
@@ -13,7 +13,7 @@
     "share_target": {
         "method": "GET",
         "enctype": "application/x-www-form-urlencoded",
-        "action": "/tools/wsp-ncs/whatsapp-msg.html",
+        "action": "/tools/wsp-ncs/index.html",
         "params": {
             "title": "title",
             "text": "n",
@@ -25,7 +25,7 @@
             "origin": "https://grupopietra.com/tools/wsp-ncs/",
             "scheme": "web+wanoa",
             "protocol": "web+wanoa",
-            "url": "whatsapp-msg.html?q=%s",
+            "url": "index.html?q=%s",
             "title": "Abrir chat en Whatsapp",
             "icon": {
                 "src": "images/whatsapp-16.png",
@@ -37,7 +37,7 @@
     "protocol_handlers": [
         {
             "protocol": "web+wanoa",
-            "url": "whatsapp-msg.html?q=%s"
+            "url": "index.html?q=%s"
         }
     ],
     "description": "Una herramienta para poder abrir chats de Whatsapp con números no agendados",

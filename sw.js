@@ -5,7 +5,7 @@ let filesToCache = [
   './images/whatsapp-128.png',
   './images/whatsapp-256.png',
   './images/whatsapp-512.png',
-  './whatsapp-msg.html',
+  './index.html',
   './linksUtils.js'
 ];
 

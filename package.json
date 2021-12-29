@@ -1,0 +1,25 @@
+{
+  "name": "whatsapp-no-contact-sender",
+  "version": "1.0.0",
+  "description": "open whatsapp chat with a strange number",
+  "main": "index.html",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thenablyn/whatsapp-para-no-agendados.git"
+  },
+  "keywords": [
+    "wanoa"
+  ],
+  "author": "thenablyn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thenablyn/whatsapp-para-no-agendados/issues"
+  },
+  "homepage": "https://github.com/thenablyn/whatsapp-para-no-agendados#readme",
+  "devDependencies": {
+    "cypress": "^9.2.0"
+  }
+}
