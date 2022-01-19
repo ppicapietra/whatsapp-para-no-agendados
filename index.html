@@ -134,7 +134,8 @@
   </footer>
 
   <script>
-    const versionNumber = "1.5.4";
+    const versionNumber = "1.5.5";
+    const debug = true;
     window.validate = () => {
       event.preventDefault();
 
@@ -156,8 +157,6 @@
 
       try {
         const params = (new URL(document.location)).searchParams;
-        console.log(params);
-
         const nParam = params.get('n');
         if (nParam) {
           const cellphoneNumber = Utils.formatCellphoneNumber(nParam);
@@ -175,17 +174,22 @@
           const cellphone = Utils.formatCellphoneNumber(qParam.split(':')[1]);
           if (Utils.validateCellphoneNumber(cellphone)) {
             const url = Utils.getLink(cellphone);
+            console.log(url);
             Utils.openChat(url);
           }
 
         }
-      } catch (e) { /** Error handler */ }
+      } catch (err) { 
+        registerException(err);
+       }
 
       try {
 
             document.getElementById('appVersion').textContent = `v${versionNumber}`;
       }
-      catch (err) { }
+      catch (err) { 
+        registerException(err);
+      }
 
       const cf = document.getElementById("cellphone");
       cf.focus();
@@ -194,7 +198,14 @@
       try {
         navigator.registerProtocolHandler('web+wanoa', 'index.html?q=%s', "WaNoA")
       }
-      catch (err) { }
+      catch (err) { 
+        registerException(err);
+      }
+    }
+    const registerException = errMessage => {
+      if( debug ) {
+        console.log(errMessage);
+      }
     }
   </script>
   <script src="./main.js"></script>

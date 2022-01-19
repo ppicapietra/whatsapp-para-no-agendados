@@ -1,5 +1,5 @@
-const versionNumber = "1.5.4";
-let cacheName = 'wanoa-cache-v2';
+const versionNumber = "1.5.5";
+let cacheName = 'wanoa-cache-v3';
 let filesToCache = [
   './images/whatsapp-16.png',
   './images/whatsapp-128.png',
