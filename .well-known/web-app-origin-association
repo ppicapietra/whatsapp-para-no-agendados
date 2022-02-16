@@ -1,7 +1,7 @@
 {
     "web_apps": [
       {
-        "manifest": "https://grupopietra.com/tools/wsp-ncs/manifest.json",
+        "manifest": "https://grupopietra.com/tools/wsp-ncs/app.webmanifest",
         "details": {
           "paths": ["/*"],
           "exclude_paths": []

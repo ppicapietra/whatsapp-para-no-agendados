@@ -1,5 +1,5 @@
-const versionNumber = "1.5.5";
-let cacheName = 'wanoa-cache-v3';
+const versionNumber = "1.6.2";
+let cacheName = 'wanoa-cache-v3.2';
 let filesToCache = [
   './images/whatsapp-16.png',
   './images/whatsapp-128.png',
@@ -39,12 +39,14 @@ self.addEventListener('fetch', e => {
       if (response !== undefined) {
         return response;
       }
-      else {
+      else {    
         return fetch(e.request)
           .then(response => {
             let responseClone = response.clone();
-            caches.open(cacheName)
+            if((e.request.url.indexOf('chrome-extension') == -1)){ 
+              caches.open(cacheName)
               .then(cache => cache.put(e.request, responseClone));
+          }
             return response;
           })
           .catch(() => caches.match('./images/whatsapp-128.png'));

@@ -1,19 +1,27 @@
 {
-    "id": "/tools/wsp-ncs/index.html",
+    "id": "com.ppicapietra.wanoa",
     "dir": "ltr",
-    "version": "1.5.5",
-    "name": "Abrir chat Whatsapp",
+    "version": "1.6.2",
+    "name": "WaNoA",
+    "category": ["productivity","utilities"],
+    "screenshots": [{
+        "src": "images/screenshot-1.jpg",
+        "sizes": "1080x2034",
+        "platform": "narrow",
+        "label": "Abrir un chat en whatsapp indicando su teléfono"
+      }],
     "short_name": "WaNoA",
     "lang": "es-AR",
-    "start_url": "https://grupopietra.com/tools/wsp-ncs/index.html",
-    "scope": "/tools/wsp-ncs/",
+    "start_url": "index.html",
+    "scope": "https://grupopietra.com/tools/wsp-ncs/",
     "display": "standalone",
+    "orientation": "portrait",
     "background_color": "white",
     "theme_color": "#25D366",
     "share_target": {
         "method": "GET",
         "enctype": "application/x-www-form-urlencoded",
-        "action": "/tools/wsp-ncs/index.html",
+        "action": "https://grupopietra.com/tools/wsp-ncs/index.html",
         "params": {
             "title": "title",
             "text": "n",
@@ -50,6 +58,11 @@
         {
             "src": "images/whatsapp-256.png",
             "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "images/whatsapp-192.png",
+            "sizes": "192x192",
             "type": "image/png"
         },
         {
