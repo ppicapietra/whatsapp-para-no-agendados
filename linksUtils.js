@@ -1,10 +1,16 @@
+const debugMode = false;
+
 const Utils = {
+    debugLog: errMessage => {
+        if( debugMode ) {
+          console.log(errMessage);
+        }
+      },
 
     isMobile: () => {
         try {
             const devicesMobile = ["iPhone", "Android", "webOS", "BlackBerry", "iPad", "iPod"];// check if is a mobile
             let isMobile = devicesMobile.some(dev => {
-                console.log(`${navigator.userAgent} contains: ${dev} => ${navigator.userAgent.indexOf(dev)}`);
                 if (navigator.userAgent.indexOf(dev) !== -1) {
                     return true;
                 }
@@ -12,19 +18,18 @@ const Utils = {
             return isMobile;
         }
         catch (e) {
-            registerException(e);
+            Utils.debugLog(e);
         }
     },
 
     getLink: (cellphoneNumber, message = null) => {
         try {
-            const host_mobile = `whatsapp://`;
-            const host_desktop = `https://web.whatsapp.com/`;
-            console.log(`${((Utils.isMobile()) ? host_mobile : host_desktop)}send?phone=+549${cellphoneNumber}${((message) ? (`&text=${message}`) : '')}&app_absent=0`);
-            return encodeURI(`${((Utils.isMobile()) ? host_mobile : host_desktop)}send?phone=+549${cellphoneNumber}${((message) ? (`&text=${message}`) : '')}&app_absent=0`);
+            const universal_host = `https://wa.me/`;
+            Utils.debugLog(`${universal_host}549${cellphoneNumber}${((message) ? (`?text=${message}`) : '')}`);
+            return encodeURI(`${universal_host}549${cellphoneNumber}${((message) ? (`?text=${message}`) : '')}`);
         }
         catch (e) {
-            registerException(e);
+            Utils.debugLog(e);
         }
     },
     validateCellphoneNumber: (cellphoneNumber) => {
@@ -32,7 +37,7 @@ const Utils = {
             return !((cellphoneNumber == "") || (cellphoneNumber.length < 8));
         }
         catch (e) {
-            registerException(e);
+            Utils.debugLog(e);
         }
     },
     formatCellphoneNumber: (cellphoneNumber) => {
@@ -40,7 +45,7 @@ const Utils = {
             return cellphoneNumber.replace(/[^0-9]/g, "").replace(/^(54)9?/g, "");
         }
         catch (e) {
-            registerException(e);
+            Utils.debugLog(e);
         }
     },
     openChat: (url) => {
@@ -48,7 +53,7 @@ const Utils = {
             window.open(url, '_blank');
         }
         catch (e) {
-            registerException(e);
+            Utils.debugLog(e);
         }
     }
 }

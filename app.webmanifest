@@ -1,23 +1,30 @@
 {
     "id": "com.ppicapietra.wanoa",
-    "dir": "ltr",
-    "version": "1.6.2",
+    "version": "1.6.3",
     "name": "WaNoA",
-    "category": ["productivity","utilities"],
-    "screenshots": [{
-        "src": "images/screenshot-1.jpg",
-        "sizes": "1080x2034",
-        "platform": "narrow",
-        "label": "Abrir un chat en whatsapp indicando su teléfono"
-      }],
     "short_name": "WaNoA",
+    "description": "Una herramienta para poder abrir chats de Whatsapp con números no agendados, desde la propia app o desde el menú compartir para el texto seleccionado del número de teléfono.",
+    "category": ["productivity","utilities"],
     "lang": "es-AR",
+    "dir": "ltr",
     "start_url": "index.html",
     "scope": "https://grupopietra.com/tools/wsp-ncs/",
     "display": "standalone",
     "orientation": "portrait",
     "background_color": "white",
     "theme_color": "#25D366",
+    "screenshots": [{
+        "src": "images/screenshot-1.jpg",
+        "sizes": "1080x2034",
+        "platform": "narrow",
+        "label": "Abrir un chat en whatsapp indicando su teléfono"
+      },
+      {
+        "src": "images/screenshot-2.jpg",
+        "sizes": "1080x2034",
+        "platform": "narrow",
+        "label": "Abrir un chat desde el menú compartir, para el texto de un número de teléfono seleccionado"
+      }],
     "share_target": {
         "method": "GET",
         "enctype": "application/x-www-form-urlencoded",
@@ -48,7 +55,6 @@
             "url": "index.html?q=%s"
         }
     ],
-    "description": "Una herramienta para poder abrir chats de Whatsapp con números no agendados",
     "icons": [
         {
             "src": "images/whatsapp-512.png",
