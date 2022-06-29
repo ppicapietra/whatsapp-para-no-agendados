@@ -3,3 +3,6 @@ node_modules
 
 ## cypress
 cypress.env.json
+
+## IDE files & folders
+.DS_Store
