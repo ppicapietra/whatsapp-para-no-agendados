@@ -20,6 +20,8 @@
   <meta name="msapplication-TileColor" content="#25D366">
   <script src="linksUtils.js"></script>
   <script src="https://kit.fontawesome.com/61adbc6fba.js" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9555847366762808"
+     crossorigin="anonymous"></script>
   <style>
     * {
       font-family: Roboto, arial, 'Courier New', Courier;
@@ -88,53 +90,55 @@
     }
 
     footer {
+      position: absolute;
+      bottom: 20px;
       display: flex;
       width: 100%;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin: 16vh auto auto;
+      margin: 50px auto auto;
       font-size: 5vmin;
     }
 
     footer p {
-      margin-top: 20px;
+      margin: 5px auto;
       font-size: small;
       color: #8e8e8e;
-    }
-
-    #addHandlerLink {
-      margin-bottom: 15px;
     }
 
     .link {
       cursor: pointer;
     }
     .installButton {
-	box-shadow: 0px 10px 14px -7px #3e7327;
-	background:linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
-	background-color:#77b55a;
-	border-radius:4px;
-	border:1px solid #4b8f29;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:13px;
-	font-weight:bold;
-	padding:6px 12px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #5b8a3c;
-  display: none;
-}
-.installButton:hover {
-	background:linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
-	background-color:#72b352;
-}
-.installButton:active {
-	position:relative;
-	top:1px;
-}
-
+    box-shadow: 0px 10px 14px -7px #3e7327;
+    background:linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
+    background-color:#77b55a;
+    border-radius:4px;
+    border:1px solid #4b8f29;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:13px;
+    font-weight:bold;
+    padding:6px 12px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #5b8a3c;
+    display: none;
+  }
+  .installButton:hover {
+    background:linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
+    background-color:#72b352;
+  }
+  .installButton:active {
+    position:relative;
+    top:1px;
+  }
+  .ads-container {
+    margin-top: 20px;
+    padding: 10px;
+    max-height: 200px;
+  }
   </style>
 
 </head>
@@ -152,15 +156,30 @@
     <a class="buttonLink" role="button" href="javascript:void(0)" id="send" onclick="return validate()">ABRIR CHAT<i class="fab fa-whatsapp btn-icon"></i></a>
   </form>
 
+  <div class="ads-container">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9555847366762808"
+       crossorigin="anonymous"></script>
+  <!-- tool-apps -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-9555847366762808"
+       data-ad-slot="5691844179"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </div>
+
   <footer>
     <p id="addHandlerLink"><a class="link" onclick="registerHandler()">Registrar enlace personalizado</a></p>
-    <p>Creado por&nbsp;<a class="link" href="https://github.com/thenablyn">@thenablyn</a></p>
+    <p>Creado por&nbsp;<a class="link" href="https://github.com/ppicapietra">@ppicapietra</a></p>
     <p id="appVersion"></p>
     <a class="installButton" id="installButton">Instalar app</a>
   </footer>
 
   <script>
-    const versionNumber = "1.6.6";
+    const versionNumber = "1.6.7";
     let eInstall = null;
     window.validate = () => {
       event.preventDefault();
