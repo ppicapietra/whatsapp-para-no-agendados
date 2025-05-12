@@ -160,7 +160,7 @@
   </footer>
 
   <script>
-    const versionNumber = "1.6.3";
+    const versionNumber = "1.6.6";
     let eInstall = null;
     window.validate = () => {
       event.preventDefault();
@@ -185,7 +185,7 @@
         const params = (new URL(document.location)).searchParams;
         Utils.debugLog(params);
         // phone number param
-        const nParam = params.get('n');
+        const nParam = params.get('text');
         if (nParam) {
           const cellphoneNumber = Utils.formatCellphoneNumber(nParam);
 
