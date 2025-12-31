@@ -179,8 +179,9 @@
   </footer>
 
   <script>
-    const versionNumber = "1.6.7";
+    const versionNumber = "1.6.9";
     let eInstall = null;
+    let messageBodyText = "";
     window.validate = () => {
       event.preventDefault();
 
@@ -193,7 +194,7 @@
       }
       else {
         //const message = document.getElementById("message").value;
-        const url = Utils.getLink(cellphoneNumber);
+        const url = Utils.getLink(cellphoneNumber, messageBodyText);
         Utils.openChat(url);
       }
     }
@@ -213,8 +214,8 @@
             Utils.openChat(url);
           }
           else { //wrong format number
-            alert("El número de celular tiene un formato incorrecto");
-
+            // alert("El número de celular tiene un formato incorrecto");
+            messageBodyText = nParam;
           }
         }
         // message body param
