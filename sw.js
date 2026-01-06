@@ -1,5 +1,5 @@
-const versionNumber = "1.6.9";
-let cacheName = 'wanoa-cache-v6';
+const versionNumber = "1.6.18";
+let cacheName = 'wanoa-cache-v10';
 let filesToCache = [
   './images/whatsapp-16.png',
   './images/whatsapp-128.png',
@@ -61,6 +61,11 @@ self.addEventListener( 'fetch', event => {
   }
 
   // 👉 Tu lógica original de cache
+  // Solo cachear peticiones GET (el Cache API no soporta POST)
+  if ( event.request.method !== 'GET' ) {
+    return;
+  }
+
   event.respondWith(
     caches.match( event.request, { ignoreSearch: true } ).then( response => {
       if ( response ) return response;
