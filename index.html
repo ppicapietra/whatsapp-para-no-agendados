@@ -19,6 +19,7 @@
   <meta name="msapplication-TileImage" content="./images/whatsapp-128.png">
   <meta name="msapplication-TileColor" content="#25D366">
   <script src="linksUtils.js"></script>
+  <script src="storageClient.js"></script>
   <script src="https://kit.fontawesome.com/61adbc6fba.js" crossorigin="anonymous"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9555847366762808"
      crossorigin="anonymous"></script>
@@ -26,6 +27,10 @@
     * {
       font-family: Roboto, arial, 'Courier New', Courier;
       outline: none;
+    }
+
+    body {
+      padding-bottom: 130px;
     }
 
     h2,
@@ -135,9 +140,132 @@
     top:1px;
   }
   .ads-container {
-    margin-top: 20px;
+    margin: 20px auto;
     padding: 10px;
-    max-height: 200px;
+    width: 100%;
+    max-width: 320px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .attach-row {
+    width: 90%;
+    margin: 0 auto 4px;
+    text-align: center;
+  }
+
+  .attachButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #fff;
+    color: #128C7E;
+    border: 1px solid #128C7E;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .attach-hint {
+    margin: 6px 0 0;
+    font-size: 0.8rem;
+    color: #8e8e8e;
+  }
+
+  .file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .file-preview {
+    position: relative;
+    width: 90%;
+    margin: 8px auto 4px;
+    padding: 12px 28px 12px 12px;
+    border: 1px solid #e4e4e4;
+    border-radius: 12px;
+    background: #f7faf8;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .file-preview[hidden],
+  .toast[hidden] {
+    display: none !important;
+  }
+
+  .file-preview img,
+  .file-preview video {
+    height: auto;
+    max-height: 140px;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+
+  .preview-icon {
+    font-size: 48px;
+    color: #c4473a;
+    margin: 4px auto;
+  }
+
+  .file-name,
+  .file-size,
+  .file-status {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: #666;
+    word-break: break-word;
+  }
+
+  .file-name {
+    color: #222;
+    font-size: 0.95rem;
+  }
+
+  .clear-file {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  a.buttonLink.is-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    background: #323232;
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    max-width: 90%;
+    z-index: 20;
+    font-size: 0.95rem;
+    text-align: center;
+    box-sizing: border-box;
   }
   </style>
 
@@ -150,22 +278,40 @@
     alt="Ícono de Whatsapp" />
   <h2>Abrir chat de Whatsapp con n&uacute;mero no agendado</h2>
   <form role="main" onsubmit="return validate()">
+    <div class="attach-row">
+      <label class="attachButton" for="fileInput">
+        <i class="fas fa-paperclip" aria-hidden="true"></i>
+        <span id="attachLabelText">Adjuntar archivo</span>
+      </label>
+      <p class="attach-hint">Imagen, video o PDF · máx. 50 MB</p>
+      <input class="file-input" type="file" id="fileInput"
+        accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,application/pdf,.jpg,.jpeg,.png,.webp,.gif,.mp4,.webm,.mov,.pdf" />
+    </div>
+    <div id="filePreview" class="file-preview" hidden>
+      <button type="button" class="clear-file" id="clearFile" aria-label="Quitar archivo">&times;</button>
+      <div id="filePreviewMedia"></div>
+      <p class="file-name" id="filePreviewName"></p>
+      <p class="file-size" id="filePreviewSize"></p>
+      <p class="file-status" id="filePreviewStatus"></p>
+    </div>
     <input type="tel" placeholder="n&uacute;mero de tel&eacute;fono" name="cellphone" id="cellphone" />
     <!--<textarea placeholder="Mensaje (opcional)" name="message" id="message" maxlength="500"
       style="display:none"></textarea>-->
     <a class="buttonLink" role="button" href="javascript:void(0)" id="send" onclick="return validate()">ABRIR CHAT<i class="fab fa-whatsapp btn-icon"></i></a>
   </form>
 
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
   <div class="ads-container">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9555847366762808"
        crossorigin="anonymous"></script>
   <!-- tool-apps -->
   <ins class="adsbygoogle"
-       style="display:block"
+       style="display:block; width:320px; height:50px;"
        data-ad-client="ca-pub-9555847366762808"
        data-ad-slot="5691844179"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+       data-ad-format="horizontal"
+       data-full-width-responsive="false"></ins>
   <script>
        (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
@@ -179,11 +325,227 @@
   </footer>
 
   <script>
-    const versionNumber = "1.6.18";
+    const versionNumber = "1.7.0";
+    const MAX_FILE_BYTES = 50 * 1024 * 1024;
+    const ALLOWED_MIME_TYPES = {
+      'image/jpeg': 'image',
+      'image/png': 'image',
+      'image/webp': 'image',
+      'image/gif': 'image',
+      'video/mp4': 'video',
+      'video/webm': 'video',
+      'video/quicktime': 'video',
+      'application/pdf': 'pdf'
+    };
+    const MIME_BY_EXTENSION = {
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      png: 'image/png',
+      webp: 'image/webp',
+      gif: 'image/gif',
+      mp4: 'video/mp4',
+      webm: 'video/webm',
+      mov: 'video/quicktime',
+      pdf: 'application/pdf'
+    };
     let eInstall = null;
     let messageBodyText = "";
+    let captionText = "";
+    let attachedFile = null;
+    let signedFileUrl = "";
+    let uploadToken = 0;
+    let previewObjectUrl = "";
+    let toastTimer = 0;
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.hidden = true;
+      }, 4000);
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    function resolveMime(file) {
+      let type = (file.type || '').toLowerCase();
+      if (type === 'image/jpg') type = 'image/jpeg';
+      if (ALLOWED_MIME_TYPES[type]) return type;
+      const extension = ((file.name || '').split('.').pop() || '').toLowerCase();
+      return MIME_BY_EXTENSION[extension] || '';
+    }
+
+    function currentOutboundMessage() {
+      if (signedFileUrl) {
+        const caption = captionText.trim();
+        return caption ? `${caption}\n\n${signedFileUrl}` : signedFileUrl;
+      }
+      return messageBodyText;
+    }
+
+    function updateSendState() {
+      const send = document.getElementById('send');
+      const blocked = Boolean(attachedFile) && !signedFileUrl;
+      send.classList.toggle('is-disabled', blocked);
+      send.setAttribute('aria-disabled', blocked ? 'true' : 'false');
+    }
+
+    function updateAttachLabel() {
+      document.getElementById('attachLabelText').textContent = attachedFile
+        ? 'Cambiar archivo'
+        : 'Adjuntar archivo';
+    }
+
+    function setUploadStatus(text) {
+      document.getElementById('filePreviewStatus').textContent = text;
+    }
+
+    function revokePreview() {
+      if (!previewObjectUrl) return;
+      URL.revokeObjectURL(previewObjectUrl);
+      previewObjectUrl = '';
+    }
+
+    function renderPreview(file, mime) {
+      revokePreview();
+      const media = document.getElementById('filePreviewMedia');
+      media.replaceChildren();
+      const kind = ALLOWED_MIME_TYPES[mime];
+      if (kind === 'image' || kind === 'video') {
+        previewObjectUrl = URL.createObjectURL(file);
+        const element = document.createElement(kind === 'image' ? 'img' : 'video');
+        element.src = previewObjectUrl;
+        if (kind === 'image') {
+          element.alt = file.name || 'Imagen adjunta';
+        } else {
+          element.muted = true;
+          element.playsInline = true;
+          element.preload = 'metadata';
+          element.addEventListener('loadeddata', () => {
+            if (element.duration > 0.1) {
+              element.currentTime = Math.min(0.1, element.duration / 2);
+            }
+          });
+        }
+        media.appendChild(element);
+      } else {
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-file-pdf preview-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        media.appendChild(icon);
+      }
+      document.getElementById('filePreviewName').textContent = file.name || 'archivo';
+      document.getElementById('filePreviewSize').textContent = formatFileSize(file.size);
+      document.getElementById('filePreview').hidden = false;
+    }
+
+    function clearAttachment() {
+      uploadToken += 1;
+      attachedFile = null;
+      signedFileUrl = '';
+      revokePreview();
+      document.getElementById('filePreview').hidden = true;
+      document.getElementById('filePreviewMedia').replaceChildren();
+      document.getElementById('fileInput').value = '';
+      updateAttachLabel();
+      updateSendState();
+    }
+
+    function shareCacheUrls() {
+      const scope = new URL('./', window.location.href);
+      return {
+        file: new URL('shared-file', scope).href,
+        meta: new URL('shared-file-meta', scope).href
+      };
+    }
+
+    async function acceptFile(file, extraCount) {
+      const mime = resolveMime(file);
+      if (!mime || !ALLOWED_MIME_TYPES[mime]) {
+        showToast('Solo se pueden enviar imágenes, videos o PDF.');
+        return;
+      }
+      if (!file.size) {
+        showToast('El archivo está vacío.');
+        return;
+      }
+      if (file.size > MAX_FILE_BYTES) {
+        showToast('El archivo supera el límite de 50 MB.');
+        return;
+      }
+
+      const uploadFile = file.type === mime
+        ? file
+        : new File([file], file.name || 'archivo', { type: mime });
+
+      if (!captionText && messageBodyText) captionText = messageBodyText;
+
+      uploadToken += 1;
+      const token = uploadToken;
+      attachedFile = uploadFile;
+      signedFileUrl = '';
+      renderPreview(uploadFile, mime);
+      updateAttachLabel();
+      updateSendState();
+      setUploadStatus('Subiendo… 0 %');
+
+      if (extraCount > 0) {
+        showToast('Solo se puede enviar un archivo. El resto se ignoró.');
+      }
+
+      try {
+        const url = await StorageClient.uploadAndSign(uploadFile, (percent) => {
+          if (token !== uploadToken) return;
+          setUploadStatus(percent >= 100 ? 'Preparando enlace…' : `Subiendo… ${percent} %`);
+        });
+        if (token !== uploadToken) return;
+        signedFileUrl = url;
+        setUploadStatus('Listo');
+        updateSendState();
+      } catch (err) {
+        if (token !== uploadToken) return;
+        Utils.debugLog(err);
+        signedFileUrl = '';
+        setUploadStatus('No se pudo subir');
+        updateSendState();
+        showToast('No se pudo subir el archivo. Intentá de nuevo.');
+      }
+    }
+
+    async function loadSharedFile() {
+      try {
+        const cache = await caches.open('wanoa-shared-file');
+        const urls = shareCacheUrls();
+        const fileResponse = await cache.match(urls.file);
+        const metaResponse = await cache.match(urls.meta);
+        if (!fileResponse || !metaResponse) {
+          showToast('No se pudo leer el archivo compartido.');
+          return;
+        }
+        const meta = await metaResponse.json();
+        const blob = await fileResponse.blob();
+        await cache.delete(urls.file);
+        await cache.delete(urls.meta);
+        const file = new File([blob], meta.name || 'archivo', {
+          type: meta.type || blob.type || ''
+        });
+        acceptFile(file, Number(meta.extraCount) || 0);
+      } catch (err) {
+        Utils.debugLog(err);
+        showToast('No se pudo leer el archivo compartido.');
+      }
+    }
+
     window.validate = () => {
       event.preventDefault();
+
+      if (attachedFile && !signedFileUrl) return false;
 
       const cf = document.getElementById("cellphone");
       const cellphoneNumber = Utils.formatCellphoneNumber(cf.value);
@@ -193,8 +555,7 @@
         return false;
       }
       else {
-        //const message = document.getElementById("message").value;
-        const url = Utils.getLink(cellphoneNumber, messageBodyText);
+        const url = Utils.getLink(cellphoneNumber, currentOutboundMessage());
         Utils.openChat(url);
       }
     }
@@ -230,9 +591,29 @@
           }
         }
         
+        const sharedFile = params.get('sharedFile') === '1';
+        const fileError = params.get('fileError');
+        if (fileError === 'size') {
+          showToast('El archivo supera el límite de 50 MB.');
+        } else if (fileError) {
+          showToast('No se pudo leer el archivo compartido.');
+        }
+
         // phone number param
         const nParam = params.get('text');
-        if (nParam) {
+        if (sharedFile) {
+          const cellphoneNumber = Utils.formatCellphoneNumber(nParam || '');
+          if (nParam && Utils.validateCellphoneNumber(cellphoneNumber)) {
+            document.getElementById('cellphone').value = cellphoneNumber;
+          } else if (nParam) {
+            captionText = nParam;
+            messageBodyText = nParam;
+          } else if (params.get('title')) {
+            captionText = params.get('title');
+            messageBodyText = params.get('title');
+          }
+          loadSharedFile();
+        } else if (nParam) {
           const cellphoneNumber = Utils.formatCellphoneNumber(nParam);
 
           if (Utils.validateCellphoneNumber(cellphoneNumber)) {
@@ -306,6 +687,15 @@
 
       const cf = document.getElementById("cellphone");
       cf.focus();
+
+      document.getElementById('clearFile').addEventListener('click', clearAttachment);
+      document.getElementById('fileInput').addEventListener('change', (changeEvent) => {
+        const files = Array.from(changeEvent.target.files || []);
+        changeEvent.target.value = '';
+        if (!files.length) return;
+        acceptFile(files[0], files.length - 1);
+      });
+      updateSendState();
       
       // Actualizar UI del protocol handler al cargar
       updateProtocolHandlerUI();

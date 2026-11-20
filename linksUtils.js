@@ -24,9 +24,11 @@ const Utils = {
 
     getLink: (cellphoneNumber, message = null) => {
         try {
-            const universal_host = `https://wa.me/`;
-            Utils.debugLog(`${universal_host}549${cellphoneNumber}${((message) ? (`?text=${message}`) : '')}`);
-            return encodeURI(`${universal_host}549${cellphoneNumber}${((message) ? (`?text=${message}`) : '')}`);
+            const universal_host = 'https://wa.me/';
+            const text = message ? `?text=${encodeURIComponent(message)}` : '';
+            const url = `${universal_host}549${cellphoneNumber}${text}`;
+            Utils.debugLog(url);
+            return url;
         }
         catch (e) {
             Utils.debugLog(e);
