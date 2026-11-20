@@ -61,3 +61,40 @@ with check (
   and byte_size <= 52428800
   and char_length(filename) between 1 and 180
 );
+
+-- La clave pública no puede hacer SELECT de la tabla. Esta función devuelve
+-- solo el código pedido y corre con permisos del owner, así que la Edge
+-- Function puede leerla sin la clave secreta.
+create or replace function public.wanoa_share_lookup(share_code text)
+returns table (
+  code text,
+  object_path text,
+  preview_path text,
+  preview_width integer,
+  preview_height integer,
+  content_type text,
+  filename text,
+  byte_size bigint,
+  expires_at timestamptz
+)
+language sql
+security definer
+set search_path = public
+as $$
+  select
+    s.code,
+    s.object_path,
+    s.preview_path,
+    s.preview_width,
+    s.preview_height,
+    s.content_type,
+    s.filename,
+    s.byte_size,
+    s.expires_at
+  from public.wanoa_shares s
+  where s.code = share_code
+    and share_code ~ '^[0-9A-Za-z]{8}$';
+$$;
+
+revoke all on function public.wanoa_share_lookup(text) from public;
+grant execute on function public.wanoa_share_lookup(text) to anon, authenticated;

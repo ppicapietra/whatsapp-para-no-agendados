@@ -228,7 +228,7 @@ const StorageClient = (() => {
       byte_size: file.size
     });
     report(100);
-    return `${SUPABASE_URL}/functions/v1/s/${code}`;
+    return `https://grupopietra.com/tools/wsp-ncs/view.php?c=${code}`;
   }
 
   return { uploadAndSign };

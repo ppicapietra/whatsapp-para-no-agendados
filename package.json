@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-no-contact-sender",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "open whatsapp chat with a strange number",
   "main": "index.html",
   "scripts": {

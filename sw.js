@@ -1,7 +1,7 @@
-const versionNumber = "1.7.2";
+const versionNumber = "1.7.3";
 const SHARE_CACHE = 'wanoa-shared-file';
 const MAX_FILE_BYTES = 50 * 1024 * 1024;
-let cacheName = 'wanoa-cache-v13';
+let cacheName = 'wanoa-cache-v14';
 let filesToCache = [
   './images/whatsapp-16.png',
   './images/whatsapp-128.png',
@@ -115,6 +115,11 @@ self.addEventListener( 'fetch', event => {
 
       return redirectToApp( requestUrl, params );
     } )() );
+    return;
+  }
+
+  // view.php arma el HTML en el servidor. No se puede cachear: cada código es otra página.
+  if ( new URL( event.request.url ).pathname.endsWith( '/view.php' ) ) {
     return;
   }
 
