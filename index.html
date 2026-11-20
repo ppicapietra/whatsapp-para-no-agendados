@@ -318,14 +318,13 @@
   </div>
 
   <footer>
-    <p id="addHandlerLink"><a class="link" id="handlerLink" onclick="toggleProtocolHandler()">Registrar enlace personalizado</a></p>
     <p>Creado por&nbsp;<a class="link" href="https://github.com/ppicapietra">@ppicapietra</a></p>
     <p id="appVersion"></p>
     <a class="installButton" id="installButton">Instalar app</a>
   </footer>
 
   <script>
-    const versionNumber = "1.7.0";
+    const versionNumber = "1.7.1";
     const MAX_FILE_BYTES = 50 * 1024 * 1024;
     const ALLOWED_MIME_TYPES = {
       'image/jpeg': 'image',
@@ -565,32 +564,7 @@
       try {
         const params = (new URL(document.location)).searchParams;
         Utils.debugLog(params);
-        
-        // Detectar si venimos de un protocol handler y no estamos en modo PWA
-        const qParam = params.get('q');
-        const isProtocolHandlerCall = qParam && qParam.includes('web+wanoa');
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
-                             window.navigator.standalone || 
-                             document.referrer.includes('android-app://');
-        
-        // Si venimos de protocol handler pero no estamos en PWA, es porque hay un handler manual registrado
-        // El handler manual con URL absoluta hace que Chrome navegue en lugar de abrir la PWA
-        if (isProtocolHandlerCall && !isStandalone) {
-          Utils.debugLog('Protocol handler llamado desde navegador, no desde PWA');
-          
-          // Verificar si hay un handler manual registrado (que causa este problema)
-          const hasManualHandler = localStorage.getItem('wanoaProtocolHandlerRegistered') === 'true';
-          
-          if (hasManualHandler) {
-            // El problema es que el handler manual con URL absoluta hace que Chrome navegue
-            // La solución es desregistrar el handler manual y usar solo el del manifest
-            // Mientras tanto, la funcionalidad seguirá funcionando, solo que en la página web
-            Utils.debugLog('Handler manual detectado - esto causa que se abra la página web en lugar de la PWA');
-            // No hacemos nada más aquí porque ya estamos en la página y la funcionalidad funciona
-            // El usuario puede desregistrar el handler manual si quiere que se abra la PWA
-          }
-        }
-        
+
         const sharedFile = params.get('sharedFile') === '1';
         const fileError = params.get('fileError');
         if (fileError === 'size') {
@@ -625,50 +599,6 @@
             messageBodyText = nParam;
           }
         }
-        // message body param (protocol handler: web+wanoa://3413442334)
-        if (qParam) {
-          // Extraer el número de teléfono de la URL del protocol handler
-          // Puede venir como: "web+wanoa://3413442334" o "web+wanoa:3413442334"
-          let phoneNumber = qParam;
-          
-          // Si contiene el protocolo, extraer solo la parte del número
-          if (qParam.includes('web+wanoa')) {
-            // Remover el protocolo y los slashes
-            phoneNumber = qParam.replace(/^web\+wanoa:?\/?\/?/, '');
-          } else if (qParam.includes(':')) {
-            // Si tiene formato de protocolo pero sin "web+wanoa", tomar después del último ":"
-            const parts = qParam.split(':');
-            phoneNumber = parts[parts.length - 1].replace(/^\/+/, ''); // Remover slashes iniciales
-          }
-          
-          const cellphone = Utils.formatCellphoneNumber(phoneNumber);
-          if (Utils.validateCellphoneNumber(cellphone)) {
-            const url = Utils.getLink(cellphone);
-            Utils.debugLog(url);
-            Utils.openChat(url);
-            
-            // Cerrar la PWA después de abrir el chat (solo cuando viene de protocol handler)
-            // Dar un pequeño delay para asegurar que WhatsApp se abra primero
-            setTimeout(() => {
-              try {
-                window.close();
-                // Si window.close() no funciona (algunos navegadores lo bloquean),
-                // al menos intentamos minimizar o hacer que la ventana no sea visible
-                if (!document.hidden) {
-                  // Fallback: intentar cerrar después de un delay más largo
-                  setTimeout(() => {
-                    window.close();
-                  }, 500);
-                }
-              } catch (err) {
-                Utils.debugLog('No se pudo cerrar la ventana automáticamente:', err);
-              }
-            }, 300);
-          } else {
-            Utils.debugLog('Número de teléfono inválido extraído del protocol handler:', phoneNumber);
-          }
-
-        }
       } catch (err) { 
         Utils.debugLog(err);
        }
@@ -696,109 +626,9 @@
         acceptFile(files[0], files.length - 1);
       });
       updateSendState();
-      
-      // Actualizar UI del protocol handler al cargar
-      updateProtocolHandlerUI();
     });
-    // Verificar si el protocol handler está registrado (usando localStorage)
-    function isProtocolHandlerRegistered() {
-      return localStorage.getItem('wanoaProtocolHandlerRegistered') === 'true';
-    }
+   
 
-    // Actualizar la UI según el estado del registro
-    function updateProtocolHandlerUI() {
-      const handlerLink = document.getElementById('handlerLink');
-      if (handlerLink) {
-        if (isProtocolHandlerRegistered()) {
-          handlerLink.textContent = 'Desregistrar enlace personalizado';
-        } else {
-          handlerLink.textContent = 'Registrar enlace personalizado';
-        }
-      }
-    }
-
-    // Registrar el protocol handler
-    function registerHandler() {
-      try {
-        // Intentar usar URL relativa (igual que en el manifest) para que funcione mejor con la PWA
-        // Aunque la especificación dice que debe ser absoluta, algunos navegadores pueden aceptar relativas
-        // Si falla, intentaremos con URL absoluta como fallback
-        let handlerUrl = 'index.html?q=%s';
-        let useRelative = true;
-        
-        try {
-          // Intentar primero con URL relativa (como en el manifest)
-          navigator.registerProtocolHandler('web+wanoa', handlerUrl, "WaNoA");
-          Utils.debugLog('Protocol handler registrado con URL relativa');
-        } catch (relativeError) {
-          // Si falla con URL relativa, usar URL absoluta como fallback
-          Utils.debugLog('URL relativa rechazada, usando URL absoluta:', relativeError);
-          handlerUrl = 'https://grupopietra.com/tools/wsp-ncs/index.html?q=%s';
-          useRelative = false;
-          navigator.registerProtocolHandler('web+wanoa', handlerUrl, "WaNoA");
-        }
-        
-        localStorage.setItem('wanoaProtocolHandlerRegistered', 'true');
-        updateProtocolHandlerUI();
-        
-        if (useRelative) {
-          alert('Protocol handler registrado correctamente con URL relativa.\n\nEsto debería funcionar mejor con la PWA instalada.');
-        } else {
-          alert('Protocol handler registrado correctamente.\n\n⚠️ IMPORTANTE: Se usó URL absoluta. Si tienes la PWA instalada, esto puede hacer que los enlaces abran la página web en lugar de la PWA.\n\nPara mejor experiencia, desregistra este handler y confía solo en el handler del manifest de la PWA.');
-        }
-      }
-      catch (err) { 
-        Utils.debugLog(err);
-        alert('Error al registrar el protocol handler: ' + err.message);
-      }
-    }
-
-    // Desregistrar el protocol handler
-    function unregisterHandler() {
-      try {
-        // Intentar desregistrar tanto con URL relativa como absoluta
-        // porque no sabemos cuál se usó al registrar
-        const relativeUrl = 'index.html?q=%s';
-        const absoluteUrl = 'https://grupopietra.com/tools/wsp-ncs/index.html?q=%s';
-        
-        // Verificar si unregisterProtocolHandler está disponible
-        if (navigator.unregisterProtocolHandler) {
-          try {
-            // Intentar primero con URL relativa
-            navigator.unregisterProtocolHandler('web+wanoa', relativeUrl);
-            Utils.debugLog('Protocol handler desregistrado con URL relativa');
-          } catch (relativeError) {
-            // Si falla, intentar con URL absoluta
-            try {
-              navigator.unregisterProtocolHandler('web+wanoa', absoluteUrl);
-              Utils.debugLog('Protocol handler desregistrado con URL absoluta');
-            } catch (absoluteError) {
-              Utils.debugLog('No se pudo desregistrar con ninguna URL:', absoluteError);
-            }
-          }
-        }
-        
-        localStorage.setItem('wanoaProtocolHandlerRegistered', 'false');
-        updateProtocolHandlerUI();
-        alert('Protocol handler desregistrado correctamente.');
-      }
-      catch (err) { 
-        Utils.debugLog(err);
-        // Aún así, actualizar el estado en localStorage
-        localStorage.setItem('wanoaProtocolHandlerRegistered', 'false');
-        updateProtocolHandlerUI();
-        alert('El protocol handler ha sido marcado como desregistrado. Si es necesario, desregístralo manualmente desde la configuración del navegador.');
-      }
-    }
-
-    // Toggle entre registrar y desregistrar
-    function toggleProtocolHandler() {
-      if (isProtocolHandlerRegistered()) {
-        unregisterHandler();
-      } else {
-        registerHandler();
-      }
-    }
     window.addEventListener('beforeinstallprompt', evt => {
       Utils.debugLog(evt.platforms);
       evt.preventDefault();

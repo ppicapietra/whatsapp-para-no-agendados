@@ -1,7 +1,7 @@
-const versionNumber = "1.7.0";
+const versionNumber = "1.7.1";
 const SHARE_CACHE = 'wanoa-shared-file';
 const MAX_FILE_BYTES = 50 * 1024 * 1024;
-let cacheName = 'wanoa-cache-v11';
+let cacheName = 'wanoa-cache-v12';
 let filesToCache = [
   './images/whatsapp-16.png',
   './images/whatsapp-128.png',

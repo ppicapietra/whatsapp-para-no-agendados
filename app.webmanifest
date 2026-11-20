@@ -1,6 +1,6 @@
 {
     "id": "com.ppicapietra.wanoa",
-    "version": "1.7.0",
+    "version": "1.7.1",
     "name": "WaNoA",
     "short_name": "WaNoA",
     "description": "Una herramienta para poder abrir chats de Whatsapp con números no agendados, desde la propia app o desde el menú compartir para el texto seleccionado del número de teléfono.",
@@ -64,12 +64,6 @@
             ]
         }
     },
-    "protocol_handlers": [
-        {
-            "protocol": "web+wanoa",
-            "url": "index.html?q=%s"
-        }
-    ],
     "icons": [
         {
             "src": "images/whatsapp-512.png",
